@@ -2,9 +2,7 @@ package org.example.model;
 
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 @XmlRootElement
 public class Message {
@@ -14,6 +12,7 @@ public class Message {
     private Date created;
     private String author;
     private Map<Long, Comment> comments = new HashMap<>();
+    private List<Link> links = new ArrayList<>();
 
     public Message() {
     }
@@ -28,33 +27,32 @@ public class Message {
     public long getId() {
         return id;
     }
-
     public void setId(long id) {
         this.id = id;
     }
-
     public String getMessage() {
         return message;
     }
-
     public void setMessage(String message) {
         this.message = message;
     }
-
     public Date getCreated() {
         return created;
     }
-
     public void setCreated(Date created) {
         this.created = created;
     }
-
     public String getAuthor() {
         return author;
     }
-
     public void setAuthor(String author) {
         this.author = author;
+    }
+    public List<Link> getLinks() {
+        return links;
+    }
+    public void setLinks(List<Link> links) {
+        this.links = links;
     }
 
     @XmlTransient
@@ -65,4 +63,6 @@ public class Message {
     public void setComments(Map<Long, Comment> comments) {
         this.comments = comments;
     }
+
+//    public void addLink(St)
 }

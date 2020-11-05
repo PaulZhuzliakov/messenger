@@ -5,7 +5,12 @@ import org.example.resources.beans.MessageFilterBean;
 import org.example.service.MessageService;
 
 import javax.ws.rs.*;
+import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
+import javax.ws.rs.core.UriInfo;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.List;
 
 @Path("/messages")
@@ -22,7 +27,7 @@ public class MessageResource {
         if (year > 0) {
             return messageService.getAllMessagesForYear(year);
         }
-        if (start >=0 && size > 0) {
+        if (start >= 0 && size > 0) {
             return messageService.getAllMessagesPaginated(start, size);
         }
         return messageService.getAllMessages();
@@ -35,8 +40,15 @@ public class MessageResource {
     }
 
     @POST
-    public Message addMessage(Message message) {
-        return messageService.addMessage(message);
+    public Response addMessage(Message message, @Context UriInfo uriInfo) throws URISyntaxException {
+        System.out.print(uriInfo.getAbsolutePath());
+        Message newMessage = messageService.addMessage(message);
+        String newId = String.valueOf(newMessage.getId());
+        URI uri = uriInfo.getAbsolutePathBuilder().path(newId).build();
+        return Response.created(uri)
+                .entity(newMessage)
+                .build();
+//        return messageService.addMessage(message);
     }
 
     @PUT
@@ -56,7 +68,6 @@ public class MessageResource {
     public CommentResource getCommentResource() {
         return new CommentResource();
     }
-
 
 
 //    вариант с BeanParam. все аннотации в классе MessageFilterBean в директории beans
